@@ -13,14 +13,18 @@ from textblob import TextBlob
 import random
 from genre_features import genre_features_page
 from ranked_features import ranked_features_page
+from app_Classification import classification_page
+from app_Wordcloud2 import wordcloud_page
 
 
 # Sidebar mit Seitenoptionen als Radio-Buttons
-page = st.sidebar.radio("Wähle eine Seite:", ["Seite 1", "Genre Features", "Genres ranked by Feature"])
+page = st.sidebar.radio("Wähle eine Seite:", ["Classification", "Wordcloud", "Genre Features", "Genres ranked by Feature"])
 
-if page == "Seite 1":
-    st.header("Seite 1")
-    st.write("Platzhalter")
+if page == "Classification":
+    classification_page()
+
+elif page == "Wordcloud":
+    wordcloud_page()
 
 elif page == "Genre Features":
     genre_features_page()
