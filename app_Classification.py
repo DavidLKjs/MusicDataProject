@@ -6,86 +6,81 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import accuracy_score
 
 def classification_page():
-    # CSS für den Dark Mode (optional zur weiteren Anpassung)
-    st.markdown("""
-        <style>
-            .main {
-                background-color: #0E1117;
-                color: #FFFFFF;
-            }
-            .stButton>button {
-                background-color: #4CAF50;
-                color: white;
-            }
-            h1, h2, h3, h4 {
-                color: #F1F1F1;
-            }
-            .stTextInput>div>input {
-                background-color: #1E1E1E;
-                color: white;
-            }
-            .stTextArea>div>textarea {
-                background-color: #1E1E1E;
-                color: white;
-            }
-        </style>
-    """, unsafe_allow_html=True)
-
-    # Funktion zum Laden der Daten
-    @st.cache_data
+    # Function to load the data (removing cache for now)
     def load_data():
-        df = pd.read_parquet('reduced_song_lyrics_with_genres.parquet')
+        try:
+            # Attempt to load the dataset
+            df = pd.read_parquet('reduced_song_lyrics_with_genres.parquet')
+        except Exception as e:
+            # Handle cases where the file is not found or cant be loaded
+            st.error(f"Error loading data: {e}")
+            st.warning("Using dummy data for testing.")
+            # Dummy dataset for testing purposes
+            data = {
+                'cleaned_lyrics': ['Test lyrics rock', 'Test lyrics rap'],
+                'tag': ['rock', 'rap']
+            }
+            df = pd.DataFrame(data)
         return df
 
-    # Daten laden
+    # Load the data
     df = load_data()
 
-    # Filtern auf die Genres Rock und Rap
+    # Ensure there is data to work with
+    if df.empty:
+        st.error("No data available for classification.")
+        return
+
+    # Filter for Rock and Rap genres
     df_filtered = df[df['tag'].isin(['rock', 'rap'])]
 
-    # Daten vorbereiten
+    # Prepare the data
     X = df_filtered['cleaned_lyrics']
     y = df_filtered['tag']
 
-    # TF-IDF Vektorisierung
+    # TFIDF vectorization
     vectorizer = TfidfVectorizer(max_features=5000)
     X_tfidf = vectorizer.fit_transform(X)
 
-    # Trainings- und Testdaten aufteilen
+    # Split into training and testing data
     X_train, X_test, y_train, y_test = train_test_split(X_tfidf, y, test_size=0.2, random_state=42)
 
-    # Naive Bayes Modell trainieren
+    # Train the Naive Bayes model
     model = MultinomialNB()
     model.fit(X_train, y_train)
 
-    # Modell-Genauigkeit auf den Testdaten berechnen
+    # Calculate model accuracy on test data
     accuracy = accuracy_score(y_test, model.predict(X_test))
 
-    # Streamlit Benutzeroberfläche
+    # Streamlit user interface
     st.title("Genre Classification: Rock vs. Rap")
-    st.subheader("Gib einen Songtext ein, um herauszufinden, ob es eher Rock oder Rap ist.")
+    st.subheader("Enter song lyrics to find out if it's more Rock or Rap.")
 
-    # Eingabefeld für den Songtext
-    text_input = st.text_area("Eingabe Songtext:", "")
+    # Input field for song lyrics
+    text_input = st.text_area("Enter Song Lyrics:", "")
 
-    if st.button("Vorhersagen"):
+    if st.button("Predict"):
         if text_input:
-            # Eingabe vektorisieren und Vorhersage treffen
+            # Vectorize the input and make a prediction
             input_tfidf = vectorizer.transform([text_input])
             prediction = model.predict(input_tfidf)
             probability = model.predict_proba(input_tfidf)
 
-            # Überprüfe die Reihenfolge der Klassen im Modell
-            genres = model.classes_  # Gibt ['rap', 'rock'] zurück
+            # Check the order of classes in the model
+            genres = model.classes_  
 
-            # Ergebnisse anzeigen (korrekt zuordnen)
-            st.markdown(f"**Vorhergesagtes Genre:** {prediction[0].capitalize()}")
-            st.markdown(f"**Vorhersage-Wahrscheinlichkeit:**")
+            # Display the results (correctly assigned)
+            st.markdown(f"**Predicted Genre:** {prediction[0].capitalize()}")
+            st.markdown(f"**Prediction Probability:**")
             st.markdown(f"- **{genres[1].capitalize()}:** {probability[0][1] * 100:.2f}%")
             st.markdown(f"- **{genres[0].capitalize()}:** {probability[0][0] * 100:.2f}%")
         else:
-            st.error("Bitte gib einen Songtext ein.")
+            st.error("Please enter song lyrics.")
 
-    # Modellinformationen anzeigen
-    st.sidebar.header("Modellinformationen")
-    st.sidebar.write(f"Modellgenauigkeit: {accuracy * 100:.2f}%")
+    # Display model information
+    st.sidebar.header("Model Information")
+    st.sidebar.write(f"Model Accuracy: {accuracy * 100:.2f}%")
+
+# Run the classification page function
+if __name__ == "__main__":
+    classification_page()
