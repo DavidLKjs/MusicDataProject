@@ -69,6 +69,7 @@ def genre_features_page():
                 mean_median_loudness = genre_df['loudness'].median()
             st.write(f'🔊 Loudness {median_mean_select}: **{round(mean_median_loudness, 1)}** dB')
             st.markdown("---")
+            
             # calculation of sums for minor/major
             minor_count = (genre_df['mode'] == 0).sum()
             major_count = (genre_df['mode'] == 1).sum()
