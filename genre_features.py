@@ -33,7 +33,7 @@ def genre_features_page():
             
             # showing selected genre
             st.subheader(selected_genre)
-        
+
         with col2:
             median_mean_select = st.selectbox(
                 'Mean/Median:',
@@ -44,6 +44,7 @@ def genre_features_page():
         col1, col2 = st.columns(2)
 
         with col1:
+            st.markdown("---")
             # mean/median: song length
             if median_mean_select == 'Mean':
                 mean_median_duration_ms = genre_df['duration_ms'].mean()
@@ -67,7 +68,7 @@ def genre_features_page():
             else:
                 mean_median_loudness = genre_df['loudness'].median()
             st.write(f'🔊 Loudness {median_mean_select}: **{round(mean_median_loudness, 1)}** dB')
-            
+            st.markdown("---")
             # calculation of sums for minor/major
             minor_count = (genre_df['mode'] == 0).sum()
             major_count = (genre_df['mode'] == 1).sum()
@@ -97,6 +98,7 @@ def genre_features_page():
             st.pyplot(plt)
 
         with col2:
+            st.markdown("---")
             # mean/median: energy
             if median_mean_select == 'Mean':
                 mean_median_energy = genre_df['energy'].mean()
@@ -120,7 +122,7 @@ def genre_features_page():
                 mean_median_acousticness = genre_df['acousticness'].median()
             
             st.write(f'🎻Acousticness {median_mean_select}: **{round(mean_median_acousticness, 2)}**')
-            
+            st.markdown("---")
             # plot: count of songs per key + minor/major
             plt.figure(figsize=(10, 6))
             sns.countplot(data=genre_df, x='key', palette=colors,  hue='mode')
