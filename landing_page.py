@@ -3,25 +3,20 @@ def landing_page():
     with st.container():
         st.image("header_pic.png")
         st.header("Interactive Music Genre Classification and Analysis with Machine Learning")
-        st.subheader("Abschluss Projekt by Sebastian Sitter and David Kujus")
-        st.markdown("""
-        Welcome to the *Music Genre Insights Web App*. This tool allows you to explore different aspects of music genres
-        using text analysis and machine learning. You can classify song lyrics, generate wordclouds, analyze genre-specific features,
-        and compare genres based on different musical characteristics.
-        """)
+        st.write("Abschluss Projekt by Sebastian Sitter and David Kujus")
         # Navigation buttons for each page
-        st.markdown("### Choose a feature in the sidebar to explore:")
+        st.markdown("### Welcome to the *Music Genre Insights Web App*. Choose one of the following tools in the sidebar to explore exciting aspects of music genres:")
         col1, col2 = st.columns(2)
         with col1:
-            st.markdown("#### :globe_with_meridians: Wordcloud Generator")
+            st.markdown("#### :cloud: Wordcloud Generator")
             st.markdown("""
             Generate a wordcloud of the most frequent words for any selected genre,
             visualizing the lyrical characteristics of music genres.
             """)
         with col2: 
-            st.markdown("#### :microphone: Genre Classification")
+            st.markdown("#### :microphone: Lyrics Classification")
             st.markdown("""
-            Classify song lyrics into their corresponding genre using machine learning.
+            Classify song lyrics into their corresponding genre (Rap & Rock) using machine learning (NLP & Naive Bayes).
             Test the accuracy of the model with your own lyrics input!
             """)
         col1, col2 = st.columns(2)
@@ -30,6 +25,10 @@ def landing_page():
             st.markdown("""
             Explore specific features such as tempo, energy, and danceability across various genres.
             Compare how genres differ in their musical characteristics.
+            """)
+            st.markdown("#### :gear: Genre Classification")
+            st.markdown("""
+            Classify songs into different genres with the help of several features and tree depths, using the DecissionTreeClassifier.
             """)
         with col2:
             st.markdown("#### :chart_with_upwards_trend: Ranked Features")
@@ -40,6 +39,5 @@ def landing_page():
         # Footer
         st.markdown("---")
         st.markdown("""
-        *Created as part of the Music Genre Classification and Analysis project.*
         This app is designed to provide deep insights into music genres using Natural Language Processing and Machine Learning.
         """)

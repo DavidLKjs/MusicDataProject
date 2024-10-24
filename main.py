@@ -8,7 +8,7 @@ from landing_page import landing_page
 from genre_ml import genre_ml_page
 
 # Sidebar mit Seitenoptionen als Radio-Buttons
-page = st.sidebar.radio("Choose Page:", ["Landing Page", "Wordcloud", "Classification", "Genre Features", "Genres Ranked by Feature", "Genre Classification"])
+page = st.sidebar.radio("Choose Page:", ["Landing Page", "Wordcloud", "Lyrics Classification", "Genre Features", "Genres Ranked by Feature", "Genre Classification"])
 
 if page == "Landing Page":
     landing_page()
@@ -16,7 +16,7 @@ if page == "Landing Page":
 elif page == "Wordcloud":
     wordcloud_page()
 
-elif page == "Classification":
+elif page == "Lyrics Classification":
     classification_page()
 
 elif page == "Genre Features":

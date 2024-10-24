@@ -89,6 +89,3 @@ def wordcloud_page():
             generate_wordcloud(genre_selected)
         else:
             st.warning("Please select a music genre.")
-
-# Call the main page function
-wordcloud_page()
