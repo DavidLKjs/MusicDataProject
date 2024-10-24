@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
 from sklearn.feature_extraction.text import TfidfVectorizer
+import time
 
 def wordcloud_page():
     """
@@ -45,6 +46,7 @@ def wordcloud_page():
         help="Choose a genre to generate the WordCloud.",
     )
 
+    # Define the function for generating the WordCloud before the button is clicked
     def generate_wordcloud(genre):
         """
         Generates and displays a WordCloud for the selected genre.
@@ -72,9 +74,21 @@ def wordcloud_page():
         plt.axis("off")
         st.pyplot(plt)
 
-    # Display the WordCloud for the selected genre
-    if genre_selected:
-        generate_wordcloud(genre_selected)
+    # Button to trigger the WordCloud generation
+    if st.button("Generate WordCloud"):
+        if genre_selected:
+            st.write(f"Generating WordCloud for {genre_selected}...")
+
+            # Show progress bar
+            progress_bar = st.progress(0)
+            for i in range(100):
+                time.sleep(0.02)  # Simulate loading time
+                progress_bar.progress(i + 1)
+
+            # Generate and display the WordCloud
+            generate_wordcloud(genre_selected)
+        else:
+            st.warning("Please select a music genre.")
 
 # Call the main page function
 wordcloud_page()

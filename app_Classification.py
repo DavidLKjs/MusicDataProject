@@ -4,6 +4,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import accuracy_score
+import time
 
 def classification_page():
     # Function to load the data (removing cache for now)
@@ -61,13 +62,21 @@ def classification_page():
 
     if st.button("Predict"):
         if text_input:
+            # Add a progress bar
+            progress_bar = st.progress(0)
+
+            # Simulate the loading process with the progress bar
+            for i in range(100):
+                time.sleep(0.02)  # Simulate time delay for prediction
+                progress_bar.progress(i + 1)
+
             # Vectorize the input and make a prediction
             input_tfidf = vectorizer.transform([text_input])
             prediction = model.predict(input_tfidf)
             probability = model.predict_proba(input_tfidf)
 
             # Check the order of classes in the model
-            genres = model.classes_  
+            genres = model.classes_
 
             # Display the results (correctly assigned)
             st.markdown(f"**Predicted Genre:** {prediction[0].capitalize()}")
